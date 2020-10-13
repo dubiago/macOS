@@ -1,1 +1,25 @@
 #!/bin/bash
+#$1 - App Name
+#$2 - Executable Path
+#$3 - Executable
+
+DIR="/Users/$USER/Applications"
+
+mkdir "$DIR/$1.app"
+mkdir "$DIR/$1.app/Contents"
+mkdir "$DIR/$1.app/Contents/Resources"
+mkdir "$DIR/$1.app/Contents/MacOS"
+mkdir "$DIR/$1.app/Contents/Resources/$2"
+
+cp ~/.appify/Info.plist "$DIR/$1.app/Contents/"
+cp ~/.appify/exe "$DIR/$1.app/Contents/MacOS/$1"
+cp ~/.appify/dosbox.conf "$DIR/$1.app/Contents/Resources/"
+cp /Applications/DOSBox.app/Contents/MacOS/DOSBox "$DIR/$1.app/Contents/Resources/"
+mv ~/DOS/$2 "$DIR/$1.app/Contents/Resources/"
+mv ~/icns/"$1".icns "$DIR/$1.app/Contents/Resources/"
+
+sed -i '' -e "s/APP_PATH/$2/g" "$DIR/$1.app/Contents/MacOS/$1"
+sed -i '' -e "s/APP_EXE/$3/g" "$DIR/$1.app/Contents/MacOS/$1"
+sed -i '' -e "s/APP_NAME/$1/g" "$DIR/$1.app/Contents/Info.plist"
+
+chmod +x "$DIR/$1.app/Contents/MacOS/$1"
